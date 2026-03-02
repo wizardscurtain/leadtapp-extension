@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // All lead access must route through the branded API endpoint only.
+    // Direct client SDK access is explicitly denied at all paths.
+    match /leads/{document=**} {
+      allow read, write: if false;
+    }
+    match /audit/{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

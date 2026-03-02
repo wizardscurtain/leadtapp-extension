@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "hosting",
+    "rewrites": [
+      { "source": "/v1/**", "function": "api" }
+    ]
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20",
+    "environmentVariables": {
+      "AUDIENCELABS_API_KEY": "$AUDIENCELABS_API_KEY",
+      "GOOGLE_API_KEY": "$GOOGLE_API_KEY"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "perception-labs-leads-functions",
+  "version": "1.0.0",
+  "engines": { "node": "20" },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "axios": "^1.6.0",
+    "express": "^4.18.0",
+    "dotenv": "^16.0.0"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start",
+    "deploy": "firebase deploy"
+  }
+}

@@ -23,6 +23,12 @@ npm-debug.log*
 # Environment
 .env
 .env.local
+.env.production
+**/.env
+
+# Firebase
+.firebase/
+backend/functions/.env
 
 # Chrome extension dev
 *.crx
