@@ -1,0 +1,15 @@
+{
+  "name": "leadtapp",
+  "version": "1.0.0",
+  "description": "Lead calling assistant for Keller Williams agents",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.260",
+    "typescript": "^5.3.3",
+    "rimraf": "^5.0.5"
+  }
+}

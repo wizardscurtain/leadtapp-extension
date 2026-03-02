@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeadTapp</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🎯</span>
+        <h1>LeadTapp</h1>
+      </div>
+      <div class="header-actions">
+        <button id="btn-export" class="btn-icon" title="Export to CSV">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <button id="btn-refresh" class="btn-icon" title="Refresh Leads">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <span id="progress-text" class="progress-text">0 / 0</span>
+    </div>
+
+    <!-- Lead Card -->
+    <section id="lead-card" class="lead-card">
+      <div class="lead-header">
+        <div class="lead-tier" id="lead-tier">A</div>
+        <div class="lead-meta">
+          <span id="lead-type" class="lead-type">Seller</span>
+          <span id="lead-source" class="lead-source">Zillow</span>
+        </div>
+        <div id="lead-score" class="lead-score">87</div>
+      </div>
+
+      <h2 id="lead-name" class="lead-name">Loading...</h2>
+
+      <div class="lead-contact">
+        <a id="lead-phone" href="tel:" class="lead-phone">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/>
+          </svg>
+          <span>(---) --------</span>
+        </a>
+        <a id="lead-email" href="mailto:" class="lead-email">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <span>---</span>
+        </a>
+      </div>
+
+      <div class="lead-address">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span id="lead-address-text">---</span>
+      </div>
+
+      <div class="lead-details">
+        <div class="detail-item">
+          <span class="detail-label">Property</span>
+          <span id="lead-property" class="detail-value">---</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Est. Value</span>
+          <span id="lead-value" class="detail-value">---</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Best Time</span>
+          <span id="lead-time" class="detail-value">---</span>
+        </div>
+      </div>
+
+      <div id="lead-tags" class="lead-tags"></div>
+    </section>
+
+    <!-- Empty State -->
+    <section id="empty-state" class="empty-state hidden">
+      <div class="empty-icon">📋</div>
+      <h2>No More Leads</h2>
+      <p>You've completed all leads in your queue.</p>
+      <button id="btn-refresh-empty" class="btn-primary">Load Demo Leads</button>
+    </section>
+
+    <!-- Feedback Section -->
+    <section id="feedback-section" class="feedback-section">
+      <h3>Call Outcome</h3>
+
+      <div class="outcome-grid">
+        <button class="outcome-btn" data-outcome="connected_appointment">
+          <span class="outcome-icon">📅</span>
+          <span>Appointment</span>
+        </button>
+        <button class="outcome-btn" data-outcome="connected_callback">
+          <span class="outcome-icon">📞</span>
+          <span>Callback</span>
+        </button>
+        <button class="outcome-btn" data-outcome="connected_interested">
+          <span class="outcome-icon">👍</span>
+          <span>Interested</span>
+        </button>
+        <button class="outcome-btn" data-outcome="connected_not_interested">
+          <span class="outcome-icon">👎</span>
+          <span>Not Interested</span>
+        </button>
+        <button class="outcome-btn" data-outcome="voicemail">
+          <span class="outcome-icon">📧</span>
+          <span>Voicemail</span>
+        </button>
+        <button class="outcome-btn" data-outcome="no_answer">
+          <span class="outcome-icon">❌</span>
+          <span>No Answer</span>
+        </button>
+        <button class="outcome-btn" data-outcome="wrong_number">
+          <span class="outcome-icon">🔢</span>
+          <span>Wrong #</span>
+        </button>
+        <button class="outcome-btn" data-outcome="disconnected">
+          <span class="outcome-icon">📵</span>
+          <span>Disconnected</span>
+        </button>
+        <button class="outcome-btn" data-outcome="do_not_call">
+          <span class="outcome-icon">🚫</span>
+          <span>DNC</span>
+        </button>
+        <button class="outcome-btn" data-outcome="other">
+          <span class="outcome-icon">📝</span>
+          <span>Other</span>
+        </button>
+      </div>
+
+      <div class="notes-section">
+        <label for="notes-input">Notes <span class="required">*</span></label>
+        <textarea
+          id="notes-input"
+          placeholder="Add notes about this call..."
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="followup-section hidden" id="followup-section">
+        <label for="followup-date">Follow-up Date</label>
+        <input type="datetime-local" id="followup-date">
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <footer class="footer">
+      <button id="btn-next" class="btn-primary btn-next" disabled>
+        <span>Next Lead</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </footer>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-value" id="stat-calls">0</span>
+        <span class="stat-label">Calls</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-appointments">0</span>
+        <span class="stat-label">Appts</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-callbacks">0</span>
+        <span class="stat-label">Callbacks</span>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+      <span id="toast-message"></span>
+    </div>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

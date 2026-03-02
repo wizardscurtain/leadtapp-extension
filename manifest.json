@@ -1,0 +1,91 @@
+{
+  "manifest_version": 3,
+  "name": "LeadTapp",
+  "version": "1.1.0",
+  "description": "KW Command workflow assistant - Record workflows, automate tasks, and manage leads exclusively on KW Command",
+  "icons": {
+    "16": "src/assets/icons/icon16.png",
+    "32": "src/assets/icons/icon32.png",
+    "48": "src/assets/icons/icon48.png",
+    "128": "src/assets/icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "src/assets/icons/icon16.png",
+      "32": "src/assets/icons/icon32.png",
+      "48": "src/assets/icons/icon48.png",
+      "128": "src/assets/icons/icon128.png"
+    },
+    "default_title": "LeadTapp - Command Dashboard"
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel/sidepanel.html"
+  },
+  "permissions": [
+    "storage",
+    "notifications",
+    "alarms",
+    "downloads",
+    "sidePanel",
+    "tabs",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.command.kw.com/*",
+    "*://command.kw.com/*",
+    "*://console.command.kw.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "commands": {
+    "next-lead": {
+      "suggested_key": { "default": "Ctrl+Shift+N" },
+      "description": "Next lead (requires feedback)"
+    },
+    "toggle-sidepanel": {
+      "suggested_key": { "default": "Ctrl+Shift+S" },
+      "description": "Open LeadTapp side panel"
+    },
+    "start-recording": {
+      "suggested_key": { "default": "Ctrl+Shift+R" },
+      "description": "Start/stop workflow recording"
+    },
+    "cycle-panel-mode": {
+      "suggested_key": { "default": "Ctrl+Shift+M" },
+      "description": "Cycle panel mode (sidepanel/floating/topbar)"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.command.kw.com/*",
+        "*://command.kw.com/*",
+        "*://console.command.kw.com/*"
+      ],
+      "js": ["src/content/recorder.js"],
+      "css": ["src/content/styles/recorder-overlay.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/content/recorder.js",
+        "src/content/executor.js",
+        "src/content/styles/recorder-overlay.css",
+        "src/content/floating-panel.js",
+        "src/content/styles/floating-panel.css",
+        "src/sidepanel/sidepanel.html",
+        "src/sidepanel/sidepanel.js",
+        "src/sidepanel/sidepanel.css"
+      ],
+      "matches": [
+        "*://*.command.kw.com/*",
+        "*://command.kw.com/*",
+        "*://console.command.kw.com/*"
+      ]
+    }
+  ]
+}

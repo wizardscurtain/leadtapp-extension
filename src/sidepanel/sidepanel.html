@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeadTapp</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <img src="../assets/icons/icon32.png" alt="LeadTapp" class="logo-img">
+        <h1>LeadTapp</h1>
+      </div>
+      <div class="header-actions">
+        <button id="btn-record" class="btn-icon btn-record" title="Record Workflow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="4" fill="currentColor"/>
+          </svg>
+        </button>
+        <button id="btn-export" class="btn-icon" title="Export to CSV">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <button id="btn-refresh" class="btn-icon" title="Refresh">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="leads">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Leads</span>
+      </button>
+      <button class="tab-btn" data-tab="dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="tab-btn" data-tab="chat">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>AI</span>
+      </button>
+      <button class="tab-btn" data-tab="manage">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <span>Manage</span>
+      </button>
+      <button class="tab-btn" data-tab="settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <!-- Recording Indicator -->
+    <div id="recording-bar" class="recording-bar hidden">
+      <span class="recording-dot"></span>
+      <span class="recording-text">Recording workflow...</span>
+      <span id="recording-count" class="recording-count">0 actions</span>
+      <button id="btn-stop-recording" class="btn-stop-recording">Stop</button>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- LEADS TAB -->
+    <!-- ============================================= -->
+    <div id="leads-tab" class="tab-content active">
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-value" id="stat-calls">0</span>
+          <span class="stat-label">Calls</span>
+        </div>
+        <div class="stat highlight">
+          <span class="stat-value" id="stat-appointments">0</span>
+          <span class="stat-label">Appointments</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-callbacks">0</span>
+          <span class="stat-label">Callbacks</span>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-section">
+        <div class="progress-info">
+          <span class="progress-label">Lead Progress</span>
+          <span id="progress-text" class="progress-text">0 / 0</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <!-- Lead Card -->
+        <section id="lead-card" class="lead-card">
+          <div class="lead-header">
+            <div class="lead-tier" id="lead-tier">A</div>
+            <div class="lead-meta">
+              <span id="lead-type" class="lead-type">Seller</span>
+              <span id="lead-source" class="lead-source">Zillow</span>
+            </div>
+            <div id="lead-score" class="lead-score">87</div>
+          </div>
+
+          <h2 id="lead-name" class="lead-name">Loading...</h2>
+
+          <div class="lead-contact">
+            <a id="lead-phone" href="tel:" class="lead-phone">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/>
+              </svg>
+              <span>(---) --------</span>
+            </a>
+            <a id="lead-email" href="mailto:" class="lead-email">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span>---</span>
+            </a>
+          </div>
+
+          <div class="lead-address">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="lead-address-text">---</span>
+          </div>
+
+          <div class="lead-details">
+            <div class="detail-item">
+              <span class="detail-label">Property</span>
+              <span id="lead-property" class="detail-value">---</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Est. Value</span>
+              <span id="lead-value" class="detail-value">---</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Best Time</span>
+              <span id="lead-time" class="detail-value">---</span>
+            </div>
+          </div>
+
+          <div id="lead-tags" class="lead-tags"></div>
+        </section>
+
+        <!-- Empty State -->
+        <section id="empty-state" class="empty-state hidden">
+          <div class="empty-icon">📋</div>
+          <h2>No More Leads</h2>
+          <p>You've completed all leads in your queue. Great work!</p>
+          <button id="btn-refresh-empty" class="btn-primary">Load Demo Leads</button>
+        </section>
+
+        <!-- Feedback Section -->
+        <section id="feedback-section" class="feedback-section">
+          <h3>Call Outcome</h3>
+
+          <div class="outcome-grid">
+            <button class="outcome-btn success" data-outcome="connected_appointment">
+              <span class="outcome-icon">📅</span>
+              <span>Appointment</span>
+            </button>
+            <button class="outcome-btn info" data-outcome="connected_callback">
+              <span class="outcome-icon">📞</span>
+              <span>Callback</span>
+            </button>
+            <button class="outcome-btn" data-outcome="connected_interested">
+              <span class="outcome-icon">👍</span>
+              <span>Interested</span>
+            </button>
+            <button class="outcome-btn" data-outcome="connected_not_interested">
+              <span class="outcome-icon">👎</span>
+              <span>Not Interested</span>
+            </button>
+            <button class="outcome-btn" data-outcome="voicemail">
+              <span class="outcome-icon">📧</span>
+              <span>Voicemail</span>
+            </button>
+            <button class="outcome-btn" data-outcome="no_answer">
+              <span class="outcome-icon">❌</span>
+              <span>No Answer</span>
+            </button>
+            <button class="outcome-btn" data-outcome="wrong_number">
+              <span class="outcome-icon">🔢</span>
+              <span>Wrong #</span>
+            </button>
+            <button class="outcome-btn" data-outcome="disconnected">
+              <span class="outcome-icon">📵</span>
+              <span>Disconnected</span>
+            </button>
+            <button class="outcome-btn danger" data-outcome="do_not_call">
+              <span class="outcome-icon">🚫</span>
+              <span>DNC</span>
+            </button>
+            <button class="outcome-btn" data-outcome="other">
+              <span class="outcome-icon">📝</span>
+              <span>Other</span>
+            </button>
+          </div>
+
+          <div class="notes-section">
+            <label for="notes-input">Notes <span class="required">*</span></label>
+            <textarea
+              id="notes-input"
+              placeholder="Add notes about this call..."
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="followup-section hidden" id="followup-section">
+            <label for="followup-date">Follow-up Date & Time</label>
+            <input type="datetime-local" id="followup-date">
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer Action -->
+      <footer class="footer">
+        <button id="btn-next" class="btn-primary btn-next" disabled>
+          <span>Submit & Next Lead</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </footer>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- DASHBOARD TAB -->
+    <!-- ============================================= -->
+    <div id="dashboard-tab" class="tab-content">
+      <div class="dashboard-content">
+        <!-- Quick Actions Header -->
+        <div class="dashboard-header">
+          <div>
+            <h2>Command Dashboard</h2>
+            <p class="dashboard-subtitle">Execute workflows across all your tabs</p>
+          </div>
+          <button id="btn-refresh-dashboard" class="btn-icon" title="Refresh Dashboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Empty Dashboard State -->
+        <div id="empty-dashboard" class="empty-dashboard hidden">
+          <div class="empty-icon">🌐</div>
+          <h3>No Sites Yet</h3>
+          <p>Record workflows on any website to see them here.</p>
+          <button id="btn-start-recording" class="btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            </svg>
+            <span>Record New Workflow</span>
+          </button>
+        </div>
+
+        <!-- Sites List -->
+        <div id="sites-list" class="sites-list">
+          <!-- Sites will be populated by JS -->
+        </div>
+
+        <!-- Workflow Chains Section -->
+        <div id="chains-section" class="chains-section">
+          <div class="section-header">
+            <h3 class="section-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              Workflow Chains
+            </h3>
+            <button id="btn-create-chain" class="btn-sm btn-secondary" title="Create workflow chain">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+          </div>
+          <div id="chains-list" class="chains-list">
+            <!-- Chains will be populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- AI CHAT TAB -->
+    <!-- ============================================= -->
+    <div id="chat-tab" class="tab-content">
+      <div class="chat-content">
+        <!-- Chat Header -->
+        <div class="chat-header">
+          <div class="chat-status">
+            <span id="llm-status-indicator" class="status-indicator"></span>
+            <span id="llm-status-text" class="status-text">Not configured</span>
+          </div>
+          <div class="chat-actions">
+            <button id="btn-clear-chat" class="btn-icon" title="Clear conversation">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+            </button>
+            <button id="btn-ai-settings" class="btn-icon" title="AI Settings">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="chat-messages">
+          <!-- Welcome message -->
+          <div class="chat-welcome">
+            <div class="chat-welcome-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/>
+                <path d="M12 16v-4"/>
+                <path d="M12 8h.01"/>
+              </svg>
+            </div>
+            <h3>AI Assistant</h3>
+            <p>Ask me to help with your workflows:</p>
+            <div class="chat-suggestions">
+              <button class="suggestion-btn" data-prompt="Analyze this page and suggest workflows">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                </svg>
+                Analyze this page
+              </button>
+              <button class="suggestion-btn" data-prompt="Describe my recorded workflows">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <path d="M14 2v6h6"/>
+                </svg>
+                Describe workflows
+              </button>
+              <button class="suggestion-btn" data-prompt="Suggest how to chain my workflows together">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                Suggest chains
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+          <!-- Listening Banner (shown during speech recognition) -->
+          <div id="listening-banner" class="listening-banner hidden">
+            <div class="listening-indicator">
+              <span class="listening-dot"></span>
+              <span class="listening-label">Listening...</span>
+            </div>
+            <div class="listening-mode">
+              <span id="listening-mode-label">Coaching Mode</span>
+            </div>
+            <div class="listening-actions">
+              <button id="btn-stop-listening" class="btn-sm btn-ghost">Stop</button>
+            </div>
+          </div>
+
+          <!-- Coaching Suggestion (shown when AI has a suggestion) -->
+          <div id="coaching-suggestion" class="coaching-suggestion hidden">
+            <div class="coaching-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <div class="coaching-text" id="coaching-text"></div>
+            <button class="coaching-dismiss" id="btn-dismiss-coaching" title="Dismiss">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Detected Actions (shown when actions are detected from call) -->
+          <div id="detected-actions" class="detected-actions hidden">
+            <div class="detected-actions-header">
+              <span class="detected-count"><span id="action-count">0</span> actions detected</span>
+              <button id="btn-create-workflow" class="btn-sm btn-primary">Create Workflow</button>
+            </div>
+            <div id="detected-actions-list" class="detected-actions-list"></div>
+          </div>
+
+          <div class="chat-input-wrapper">
+            <textarea
+              id="chat-input"
+              class="chat-input"
+              placeholder="Type a message..."
+              rows="1"
+            ></textarea>
+            <button id="btn-mic" class="btn-mic" title="Start listening (call coaching)">
+              <svg class="mic-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+              <svg class="mic-stop-icon hidden" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="6" width="12" height="12" rx="2"/>
+              </svg>
+            </button>
+            <button id="btn-send-chat" class="btn-send" title="Send message">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+          <div class="chat-input-hint">
+            <span id="hint-default">Press Enter to send, Shift+Enter for new line</span>
+            <span id="hint-listening" class="hidden">Click mic or press Esc to stop listening</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Settings Modal -->
+    <div id="ai-settings-modal" class="modal hidden">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-lg">
+        <div class="modal-header">
+          <h3>AI Configuration</h3>
+          <button class="btn-icon" onclick="closeAISettingsModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="llm-provider">Provider</label>
+            <select id="llm-provider" class="form-input">
+              <option value="openai">OpenAI (GPT-4)</option>
+              <option value="anthropic">Anthropic (Claude)</option>
+              <option value="local">Local (Ollama/LM Studio)</option>
+              <option value="mcp">MCP Server</option>
+            </select>
+          </div>
+
+          <div id="api-key-group" class="form-group">
+            <label for="llm-api-key">API Key</label>
+            <input type="password" id="llm-api-key" class="form-input" placeholder="sk-...">
+            <span class="form-hint">Your API key is stored locally and never sent to our servers.</span>
+          </div>
+
+          <div id="local-url-group" class="form-group hidden">
+            <label for="llm-base-url">Endpoint URL</label>
+            <input type="text" id="llm-base-url" class="form-input" placeholder="http://localhost:11434/api">
+          </div>
+
+          <div class="form-group">
+            <label for="llm-model">Model</label>
+            <select id="llm-model" class="form-input">
+              <option value="">Default</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="llm-temperature">Temperature</label>
+              <input type="range" id="llm-temperature" class="form-range" min="0" max="1" step="0.1" value="0.7">
+              <span id="temperature-value" class="form-value">0.7</span>
+            </div>
+            <div class="form-group">
+              <label for="llm-max-tokens">Max Tokens</label>
+              <input type="number" id="llm-max-tokens" class="form-input" value="2048" min="256" max="8192">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="llm-system-prompt">System Prompt (optional)</label>
+            <textarea id="llm-system-prompt" class="form-input" rows="3" placeholder="Custom instructions for the AI..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-test-llm" class="btn-secondary">Test Connection</button>
+          <button id="btn-save-llm" class="btn-primary">Save Configuration</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- MANAGE TAB -->
+    <!-- ============================================= -->
+    <div id="manage-tab" class="tab-content">
+      <div class="manage-content">
+        <!-- Export Configuration -->
+        <div class="manage-section">
+          <div class="section-header">
+            <h3>Export Configuration</h3>
+            <button id="btn-export-leads" class="btn-primary btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Export CSV
+            </button>
+          </div>
+          <p class="section-hint">Select a CRM preset or customize your export columns</p>
+
+          <!-- CRM Preset Selector -->
+          <div class="preset-selector">
+            <label class="field-label">CRM Preset</label>
+            <div class="preset-buttons">
+              <button class="preset-btn" data-preset="kw_command">KW Command</button>
+              <button class="preset-btn" data-preset="follow_up_boss">Follow Up Boss</button>
+              <button class="preset-btn" data-preset="sierra">Sierra</button>
+              <button class="preset-btn active" data-preset="custom">Custom</button>
+            </div>
+          </div>
+
+          <!-- Column Mapper -->
+          <div class="column-mapper">
+            <label class="field-label">Export Columns</label>
+            <div id="column-list" class="column-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Fields -->
+        <div class="manage-section">
+          <div class="section-header">
+            <h3>Custom Fields</h3>
+            <button id="btn-add-field" class="btn-secondary btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Field
+            </button>
+          </div>
+          <p class="section-hint">Add custom fields to capture additional data (tags, notes, etc.)</p>
+          <div id="custom-fields-list" class="custom-fields-list">
+            <!-- Custom fields populated by JS -->
+          </div>
+        </div>
+
+        <!-- Lead Preview / Editor -->
+        <div class="manage-section">
+          <div class="section-header">
+            <h3>Lead History</h3>
+            <span id="lead-history-count" class="lead-count">0 leads</span>
+          </div>
+          <p class="section-hint">View and edit leads that have been called</p>
+
+          <!-- Lead Search -->
+          <div class="lead-search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="lead-search-input" placeholder="Search leads..." class="search-input">
+          </div>
+
+          <!-- Lead Table -->
+          <div class="lead-table-container">
+            <table class="lead-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Calls</th>
+                  <th>Outcome</th>
+                  <th>Tags</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="lead-table-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+            <div id="lead-table-empty" class="lead-table-empty hidden">
+              <p>No leads have been called yet.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export Preview -->
+        <div class="manage-section" id="export-preview-section">
+          <div class="section-header">
+            <h3>Export Preview</h3>
+            <button id="btn-refresh-preview" class="btn-icon" title="Refresh preview">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+            </button>
+          </div>
+          <div class="preview-table-container">
+            <table id="preview-table" class="preview-table">
+              <thead id="preview-headers">
+                <!-- Headers populated by JS -->
+              </thead>
+              <tbody id="preview-body">
+                <!-- Preview rows populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Edit Modal -->
+    <div id="lead-edit-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="closeLeadEditModal()"></div>
+      <div class="modal-content modal-lg">
+        <div class="modal-header">
+          <h3>Edit Lead: <span id="edit-lead-name">Lead</span></h3>
+          <button class="btn-icon" onclick="closeLeadEditModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body" id="lead-edit-fields">
+          <!-- Lead fields populated by JS -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeLeadEditModal()">Cancel</button>
+          <button class="btn-primary" onclick="saveLeadEdits()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call History Modal -->
+    <div id="call-history-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="closeCallHistoryModal()"></div>
+      <div class="modal-content modal-lg">
+        <div class="modal-header">
+          <h3>Call History: <span id="call-history-lead-name">Lead</span></h3>
+          <button class="btn-icon" onclick="closeCallHistoryModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body" id="call-history-content">
+          <!-- Call history populated by JS -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeCallHistoryModal()">Close</button>
+          <button class="btn-primary" onclick="openLeadEditModalFromHistory()">Edit Lead</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Custom Field Modal -->
+    <div id="add-field-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="closeAddFieldModal()"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add Custom Field</h3>
+          <button class="btn-icon" onclick="closeAddFieldModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="field-label">Field Key</label>
+            <input type="text" id="new-field-key" class="variable-input" placeholder="e.g. custom_tag">
+            <span class="field-hint">Used for export (no spaces)</span>
+          </div>
+          <div class="form-group">
+            <label class="field-label">Display Label</label>
+            <input type="text" id="new-field-label" class="variable-input" placeholder="e.g. Custom Tag">
+          </div>
+          <div class="form-group">
+            <label class="field-label">Field Type</label>
+            <select id="new-field-type" class="variable-input">
+              <option value="text">Text</option>
+              <option value="textarea">Long Text</option>
+              <option value="select">Dropdown</option>
+              <option value="tags">Tags</option>
+            </select>
+          </div>
+          <div id="field-options-group" class="form-group hidden">
+            <label class="field-label">Options (one per line)</label>
+            <textarea id="new-field-options" class="variable-input" rows="3" placeholder="Option 1&#10;Option 2&#10;Option 3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="field-label">CRM Column Name</label>
+            <input type="text" id="new-field-crm" class="variable-input" placeholder="e.g. custom_field_1">
+            <span class="field-hint">Column name for CRM import</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeAddFieldModal()">Cancel</button>
+          <button class="btn-primary" onclick="saveNewField()">Add Field</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- SETTINGS TAB -->
+    <!-- ============================================= -->
+    <div id="settings-tab" class="tab-content">
+      <div class="settings-content">
+        <h2>Settings</h2>
+
+        <div class="settings-section">
+          <h3>Panel Mode</h3>
+          <p class="settings-hint">Choose how the dashboard appears:</p>
+          <div class="panel-mode-selector">
+            <button class="panel-mode-btn active" data-mode="sidepanel" title="Native Chrome side panel">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <line x1="15" y1="3" x2="15" y2="21"/>
+              </svg>
+              <span>Side Panel</span>
+            </button>
+            <button class="panel-mode-btn" data-mode="floating" title="Draggable floating window">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="5" width="14" height="14" rx="2"/>
+                <path d="M5 9h14"/>
+              </svg>
+              <span>Floating</span>
+            </button>
+            <button class="panel-mode-btn" data-mode="topbar" title="Collapsible top bar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <line x1="3" y1="9" x2="21" y2="9"/>
+              </svg>
+              <span>Top Bar</span>
+            </button>
+          </div>
+          <div id="panel-mode-info" class="panel-mode-info">
+            <span class="info-text">Side Panel: Native Chrome panel, best for wide monitors</span>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Keyboard Shortcuts</h3>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Toggle Panel</span>
+            <kbd>Ctrl+Shift+S</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Cycle Panel Mode</span>
+            <kbd>Ctrl+Shift+M</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Next Lead</span>
+            <kbd>Ctrl+Shift+N</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Record Workflow</span>
+            <kbd>Ctrl+Shift+R</kbd>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Workflows</h3>
+          <button id="btn-clear-workflows" class="btn-secondary">
+            Clear All Workflows
+          </button>
+        </div>
+
+        <div class="settings-section">
+          <h3>Data</h3>
+          <button id="btn-clear-feedback" class="btn-secondary">
+            Clear Feedback History
+          </button>
+        </div>
+
+        <div class="settings-section">
+          <h3>About</h3>
+          <p class="settings-text">
+            LeadTapp v1.0.0<br>
+            Command Dashboard for Real Estate Agents
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow Editor Modal -->
+    <div id="workflow-editor-modal" class="modal hidden">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-lg">
+        <div class="modal-header">
+          <h3>Edit Workflow: <span id="editor-workflow-name">Workflow</span></h3>
+          <button class="btn-icon" onclick="closeWorkflowEditor()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="editor-section">
+            <label class="editor-label">Workflow Name</label>
+            <input type="text" id="editor-name-input" class="variable-input" placeholder="Workflow name">
+          </div>
+          <div class="editor-section">
+            <label class="editor-label">Actions</label>
+            <p class="editor-hint">Mark actions as variables to prompt for input when running. Input actions are best candidates.</p>
+            <div id="editor-actions-list" class="editor-actions-list">
+              <!-- Actions populated by JS -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-cancel-editor" class="btn-secondary" onclick="closeWorkflowEditor()">Cancel</button>
+          <button id="btn-save-editor" class="btn-primary" onclick="saveWorkflowEdits()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variable Input Modal -->
+    <div id="variable-modal" class="modal hidden">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Run: <span id="modal-workflow-name">Workflow</span></h3>
+          <button id="btn-close-modal" class="btn-icon" onclick="closeVariableModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div id="variable-inputs" class="modal-body">
+          <!-- Variable inputs will be populated by JS -->
+        </div>
+        <div class="modal-footer">
+          <button id="btn-cancel-variable" class="btn-secondary">Cancel</button>
+          <button id="btn-run-variable" class="btn-primary">Run Workflow</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow Picker Modal -->
+    <div id="workflow-picker-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="closeWorkflowPickerModal()"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add Workflow to Chain</h3>
+          <button class="btn-icon" onclick="closeWorkflowPickerModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="picker-hint">Select a workflow to add as a step:</p>
+          <div id="workflow-picker-list" class="workflow-picker-list">
+            <!-- Workflows populated by JS -->
+          </div>
+          <div id="workflow-picker-empty" class="picker-empty hidden">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 12h6M12 9v6"/>
+            </svg>
+            <p>No workflows available. Record some workflows first.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeWorkflowPickerModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Condition Editor Modal -->
+    <div id="condition-editor-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="closeConditionEditorModal()"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Step Condition</h3>
+          <button class="btn-icon" onclick="closeConditionEditorModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="field-label">Condition Expression</label>
+            <input type="text" id="condition-input" class="variable-input" placeholder="Leave empty to always run">
+            <span class="field-hint">Step runs only when this condition is true</span>
+          </div>
+          <div class="condition-examples">
+            <p class="examples-title">Examples:</p>
+            <div class="example-item" onclick="setConditionExample('{{previousSuccess}} == true')">
+              <code>{{previousSuccess}} == true</code>
+              <span>Run if previous step succeeded</span>
+            </div>
+            <div class="example-item" onclick="setConditionExample('{{previousSuccess}} == false')">
+              <code>{{previousSuccess}} == false</code>
+              <span>Run if previous step failed</span>
+            </div>
+            <div class="example-item" onclick="setConditionExample('{{stepData.count}} > 0')">
+              <code>{{stepData.count}} > 0</code>
+              <span>Run if data count is positive</span>
+            </div>
+            <div class="example-item" onclick="setConditionExample('{{stepData.found}} == true')">
+              <code>{{stepData.found}} == true</code>
+              <span>Run if element was found</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeConditionEditorModal()">Cancel</button>
+          <button class="btn-primary" onclick="saveCondition()">Save Condition</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+      <span id="toast-message"></span>
+    </div>
+  </div>
+
+  <script src="speech-recognition.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
