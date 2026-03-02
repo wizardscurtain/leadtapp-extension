@@ -149,15 +149,22 @@ const elements = {
     // AI Settings Modal
     aiSettingsModal: document.getElementById('ai-settings-modal'),
     llmProviderSelect: document.getElementById('llm-provider'),
-    apiKeyInput: document.getElementById('api-key'),
-    modelNameInput: document.getElementById('model-name'),
-    temperatureSlider: document.getElementById('temperature'),
+    apiKeyInput: document.getElementById('llm-api-key'),
+    llmBaseUrlInput: document.getElementById('llm-base-url'),
+    localUrlGroup: document.getElementById('local-url-group'),
+    modelSelect: document.getElementById('llm-model'),
+    temperatureSlider: document.getElementById('llm-temperature'),
     temperatureValue: document.getElementById('temperature-value'),
-    maxTokensInput: document.getElementById('max-tokens'),
-    systemPromptInput: document.getElementById('system-prompt'),
-    btnTestConnection: document.getElementById('btn-test-connection'),
-    btnSaveAiSettings: document.getElementById('btn-save-ai-settings'),
-    btnCancelAiSettings: document.getElementById('btn-cancel-ai-settings'),
+    maxTokensInput: document.getElementById('llm-max-tokens'),
+    systemPromptInput: document.getElementById('llm-system-prompt'),
+    btnTestConnection: document.getElementById('btn-test-llm'),
+    btnSaveAiSettings: document.getElementById('btn-save-llm'),
+
+    // Speech Settings (in AI Settings Modal)
+    speechBackendSelect: document.getElementById('speech-backend'),
+    whisperApiKeyInput: document.getElementById('whisper-api-key'),
+    whisperKeyGroup: document.getElementById('whisper-key-group'),
+    silenceThresholdInput: document.getElementById('silence-threshold'),
 
     // Panel Mode
     panelModeButtons: document.querySelectorAll('.panel-mode-btn'),
@@ -1793,13 +1800,20 @@ function autoResizeTextarea() {
 // AI Settings Modal
 // =============================================================================
 
-function openAiSettingsModal() {
+async function openAiSettingsModal() {
     elements.aiSettingsModal?.classList.remove('hidden');
 
     // Load current config
     if (chatState.config) {
         populateSettingsForm(chatState.config);
     }
+
+    // Load speech config
+    await loadSpeechSettings();
+
+    // Set up speech backend change listener
+    elements.speechBackendSelect?.addEventListener('change', updateSpeechBackendUI);
+    updateSpeechBackendUI();
 }
 
 function closeAiSettingsModal() {
@@ -1867,6 +1881,12 @@ async function saveAiSettings() {
         return;
     }
 
+    // Save speech settings alongside LLM settings
+    const speechSaved = await saveSpeechSettings();
+    if (!speechSaved) {
+        showToast('AI settings saved, but speech settings failed', 'warning');
+    }
+
     chatState.config = config;
     showToast('AI settings saved', 'success');
     closeAiSettingsModal();
@@ -1918,6 +1938,91 @@ function resetTestButton() {
         elements.btnTestConnection.disabled = false;
         elements.btnTestConnection.textContent = 'Test Connection';
         elements.btnTestConnection.classList.remove('success', 'error');
+    }
+}
+
+// =============================================================================
+// Speech Settings (Call Listening Configuration)
+// =============================================================================
+
+/**
+ * Load speech recognition settings from storage and populate form
+ */
+async function loadSpeechSettings() {
+    try {
+        const result = await chrome.storage.local.get('speechConfig');
+        const speechConfig = result.speechConfig || {
+            backend: 'webspeech',
+            openaiApiKey: '',
+            silenceThresholdMs: 2000
+        };
+
+        // Populate form fields
+        if (elements.speechBackendSelect) {
+            elements.speechBackendSelect.value = speechConfig.backend || 'webspeech';
+        }
+        if (elements.whisperApiKeyInput) {
+            elements.whisperApiKeyInput.value = speechConfig.openaiApiKey || '';
+        }
+        if (elements.silenceThresholdInput) {
+            elements.silenceThresholdInput.value = speechConfig.silenceThresholdMs || 2000;
+        }
+
+        console.log('[LeadTapp] Speech settings loaded:', speechConfig.backend);
+    } catch (err) {
+        console.error('[LeadTapp] Failed to load speech settings:', err);
+    }
+}
+
+/**
+ * Update speech backend UI based on selection
+ * Shows/hides Whisper API key field
+ */
+function updateSpeechBackendUI() {
+    const backend = elements.speechBackendSelect?.value || 'webspeech';
+
+    if (elements.whisperKeyGroup) {
+        if (backend === 'whisper') {
+            elements.whisperKeyGroup.classList.remove('hidden');
+        } else {
+            elements.whisperKeyGroup.classList.add('hidden');
+        }
+    }
+}
+
+/**
+ * Save speech recognition settings to storage
+ * Also reconfigures SpeechRecognitionManager if active
+ */
+async function saveSpeechSettings() {
+    const speechConfig = {
+        backend: elements.speechBackendSelect?.value || 'webspeech',
+        openaiApiKey: elements.whisperApiKeyInput?.value?.trim() || '',
+        silenceThresholdMs: parseInt(elements.silenceThresholdInput?.value) || 2000
+    };
+
+    // If Whisper selected but no dedicated key, try to use main LLM key if provider is OpenAI
+    if (speechConfig.backend === 'whisper' && !speechConfig.openaiApiKey) {
+        const provider = elements.llmProviderSelect?.value;
+        const llmKey = elements.apiKeyInput?.value?.trim();
+        if (provider === 'openai' && llmKey) {
+            speechConfig.openaiApiKey = llmKey;
+        }
+    }
+
+    try {
+        await chrome.storage.local.set({ speechConfig });
+        console.log('[LeadTapp] Speech settings saved:', speechConfig.backend);
+
+        // Reconfigure speech recognition manager if it exists
+        if (typeof speechRecognitionManager !== 'undefined' && speechRecognitionManager) {
+            speechRecognitionManager.configure(speechConfig);
+        }
+
+        return true;
+    } catch (err) {
+        console.error('[LeadTapp] Failed to save speech settings:', err);
+        return false;
     }
 }
 

@@ -3618,3 +3618,39 @@ kbd {
   color: var(--text-muted);
   margin-top: 2px;
 }
+
+/* ==========================================================================
+   AI Settings Modal - Speech Section
+   ========================================================================== */
+
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: var(--space-lg) 0;
+}
+
+.settings-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.form-hint {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+#ai-settings-modal .form-group {
+  margin-bottom: var(--space-md);
+}
+
+#ai-settings-modal label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
