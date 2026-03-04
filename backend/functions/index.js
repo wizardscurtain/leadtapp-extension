@@ -214,14 +214,52 @@ async function fetchUpstreamLeads(audienceId) {
 }
 
 /**
+ * Default Audience IDs by Category
+ * These are fallback defaults if no environment variable is set
+ */
+const DEFAULT_AUDIENCE_IDS = {
+  buyers: [
+    '337d34b3-aee3-4550-9741-66c458c45e15',  // CCWA_Buyers
+    '511b2108-04ff-44c3-9bfd-cb4ed5320a21',  // CCWA_Buyers_SweetSpot
+  ],
+  sellers: [
+    '8d003584-b530-4d4c-8bfe-01c66abed5a4',  // CCWA_Sellers_SweetSpot
+  ],
+  preforeclosure: [
+    '864abe87-67ef-4c19-80f5-bdbd74ba6fe5',  // Preforeclosure Leads in the last 24hrs
+  ],
+};
+
+// Combined default list
+const ALL_DEFAULT_AUDIENCE_IDS = [
+  ...DEFAULT_AUDIENCE_IDS.buyers,
+  ...DEFAULT_AUDIENCE_IDS.sellers,
+  ...DEFAULT_AUDIENCE_IDS.preforeclosure,
+];
+
+/**
  * Get configured audience IDs
+ * Priority: ENV var > Firebase config > defaults
  */
 function getAudienceIds() {
-  const configIds = functions.config().audiences?.ids || process.env.AUDIENCE_IDS;
+  const configIds = process.env.AUDIENCE_IDS || functions.config().audiences?.ids;
   if (configIds) {
     return configIds.split(',').map(id => id.trim()).filter(Boolean);
   }
-  return [];
+  // Fall back to defaults
+  return ALL_DEFAULT_AUDIENCE_IDS;
+}
+
+/**
+ * Get audience IDs by category (for filtered ingestion)
+ */
+function getAudienceIdsByCategory(category) {
+  const envKey = `AUDIENCE_IDS_${category.toUpperCase()}`;
+  const envIds = process.env[envKey];
+  if (envIds) {
+    return envIds.split(',').map(id => id.trim()).filter(Boolean);
+  }
+  return DEFAULT_AUDIENCE_IDS[category.toLowerCase()] || [];
 }
 
 exports.ingestLeads = functions.pubsub
