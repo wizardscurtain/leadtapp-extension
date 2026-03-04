@@ -262,7 +262,9 @@ function getAudienceIdsByCategory(category) {
   return DEFAULT_AUDIENCE_IDS[category.toLowerCase()] || [];
 }
 
-exports.ingestLeads = functions.pubsub
+exports.ingestLeads = functions
+  .runWith({ secrets: ['AUDIENCELABS_API_KEY'] })
+  .pubsub
   .schedule('every 24 hours')
   .onRun(async (context) => {
     const syncStartTime = new Date();
@@ -422,7 +424,9 @@ async function upsertGhlContact(agentData) {
   return response.data?.contact?.id || ghlContactId;
 }
 
-exports.syncAgentToGHL = functions.https.onRequest(async (req, res) => {
+exports.syncAgentToGHL = functions
+  .runWith({ secrets: ['AUDIENCELABS_API_KEY'] })
+  .https.onRequest(async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -498,7 +502,9 @@ async function incrementGhlLeadsDelivered(ghlContactId, newCount) {
   }
 }
 
-exports.assignLead = functions.https.onRequest(async (req, res) => {
+exports.assignLead = functions
+  .runWith({ secrets: ['AUDIENCELABS_API_KEY'] })
+  .https.onRequest(async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -902,13 +908,17 @@ app.get('/health', (req, res) => {
 });
 
 // Export Express app as Cloud Function
-exports.api = functions.https.onRequest(app);
+exports.api = functions
+  .runWith({ secrets: ['AUDIENCELABS_API_KEY'] })
+  .https.onRequest(app);
 
 // =============================================================================
 // Manual Trigger for Lead Ingestion (for testing)
 // =============================================================================
 
-exports.triggerIngestion = functions.https.onRequest(async (req, res) => {
+exports.triggerIngestion = functions
+  .runWith({ secrets: ['AUDIENCELABS_API_KEY'] })
+  .https.onRequest(async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
