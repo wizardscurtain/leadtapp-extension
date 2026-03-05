@@ -33,3 +33,7 @@ backend/functions/.env
 # Chrome extension dev
 *.crx
 *.pem
+-e 
+# Environment files
+*.env
+*.env.*
