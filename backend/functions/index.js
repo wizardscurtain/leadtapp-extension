@@ -188,9 +188,15 @@ async function fetchUpstreamLeads(audienceId) {
   const pageSize = 1000;
   let hasMore = true;
 
+  console.log(`[Perception Labs] Fetching from audience: ${audienceId}`);
+  console.log(`[Perception Labs] API Key configured: ${UPSTREAM_API_KEY ? 'Yes (' + UPSTREAM_API_KEY.substring(0, 8) + '...)' : 'No'}`);
+
   while (hasMore) {
     try {
-      const response = await axios.get(`${UPSTREAM_API_BASE}/audiences/${audienceId}`, {
+      const url = `${UPSTREAM_API_BASE}/audiences/${audienceId}`;
+      console.log(`[Perception Labs] Requesting: ${url} (page ${page})`);
+
+      const response = await axios.get(url, {
         headers: {
           'X-Api-Key': UPSTREAM_API_KEY,
           'Content-Type': 'application/json'
@@ -198,7 +204,12 @@ async function fetchUpstreamLeads(audienceId) {
         params: { page, page_size: pageSize }
       });
 
+      console.log(`[Perception Labs] Response status: ${response.status}`);
+      console.log(`[Perception Labs] Response keys: ${Object.keys(response.data || {}).join(', ')}`);
+
       const { data, total_pages } = response.data;
+      console.log(`[Perception Labs] data length: ${data?.length || 0}, total_pages: ${total_pages}`);
+
       if (data && data.length > 0) {
         allLeads.push(...data);
       }
@@ -206,10 +217,15 @@ async function fetchUpstreamLeads(audienceId) {
       page++;
     } catch (error) {
       console.error(`[Perception Labs] Error fetching page ${page}:`, error.message);
+      if (error.response) {
+        console.error(`[Perception Labs] Response status: ${error.response.status}`);
+        console.error(`[Perception Labs] Response data: ${JSON.stringify(error.response.data)}`);
+      }
       hasMore = false;
     }
   }
 
+  console.log(`[Perception Labs] Total leads fetched: ${allLeads.length}`);
   return allLeads;
 }
 
@@ -917,7 +933,7 @@ exports.api = functions
 // =============================================================================
 
 exports.triggerIngestion = functions
-  .runWith({ secrets: ['AUDIENCELABS_API_KEY'] })
+  .runWith({ secrets: ['AUDIENCELABS_API_KEY', 'ADMIN_API_KEY'] })
   .https.onRequest(async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
